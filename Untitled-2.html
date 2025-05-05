@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApuntesHub - Tu plataforma de gestión de apuntes</title>
+    <style>
+        /* Variables globales */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9b0;
+            --warning-color: #f9c74f;
+            --danger-color: #f94144;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        /* Reset y estilos básicos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #f5f7fb;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Utilidades */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 2rem;
+        }
+
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+
+        .mt-4 {
+            margin-top: 2rem;
+        }
+
+        .py-2 {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .align-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-1 {
+            gap: 0.5rem;
+        }
+
+        .gap-2 {
+            gap: 1rem;
+        }
+
+        /* Botones */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: var(--box-shadow);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #e41d24;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #40b89e;
+        }
+
+        /* Navegación */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            bottom: 0;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-link.active:after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--dark-color);
+        }
+
+        /* Formularios */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid #ddd;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .form-text {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .form-error {
+            color: var(--danger-color);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Tarjetas */
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .card-footer {
+            padding: 1.25rem;
+            border-top: 1px solid #eee;
+            background-color: #f9fafb;
+        }
+
+        /* Clases específicas para el layout de la aplicación */
+        .auth-container {
+            max-width: 500px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+
+        .auth-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .auth-subtitle {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #6c757d;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #6c757d;
+        }
+
+        .auth-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Layout principal */
+        .main-content {
+            flex: 1;
+            padding: 2rem 0;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            height: calc(100vh - 100px);
+            position: sticky;
+            top: 80px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--dark-color);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link:hover {
+            background-color: #f1f5ff;
+            color: var(--primary-color);
+        }
+
+        .sidebar-link.active {
+            background-color: #e6edff;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .content-area {
+            flex: 1;
+            padding-left: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #6c757d;
+        }
+
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        /* Tarjetas de apuntes */
+        .note-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .note-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        .note-subject {
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 1rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            align-items: center;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .note-action {
+            color: #6c757d;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .note-action:hover {
+            color: var(--primary-color);
+        }
+
+        /* Editor de apuntes */
+        .note-editor {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .editor-toolbar {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            color: #6c757d;
+            transition: var(--transition);
+        }
+
+        .toolbar-btn:hover {
+            background-color: #f1f5ff;
+            color: var(--primary-color);
+        }
+
+        .toolbar-btn.active {
+            background-color: #e6edff;
+            color: var(--primary-color);
+        }
+
+        .editor-content {
+            padding: 1.5rem;
+            min-height: 300px;
+            outline: none;
+            border: none;
+            resize: vertical;
+            width: 100%;
+            font-family: inherit;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Pie de página */
+        .footer {
+            background-color: white;
+            padding: 2rem 0;
+            margin-top: auto;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: #6c757d;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        /* Loader */
+        .loader {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(67, 97, 238, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .loading-text {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        /* Notificaciones */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            max-width: 350px;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .notification-success {
+            border-left: 5px solid var(--success-color);
+        }
+
+        .notification-error {
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .notification-info {
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #6c757d;
+            align-self: flex-start;
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .notification-message {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+            color: #6c757d;
+            transition: var(--transition);
+        }
+
+        .tab:hover {
+            color: var(--primary-color);
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+        }
+
+        .tab.active:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--danger-color);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 1.25rem;
+            border-top: 1px solid #eee;
+            text-align: right;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-4 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-actions {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .main-layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                margin-bottom: 2rem;
+            }
+
+            .content-area {
+                padding-left: 0;
+            }
+
+            .modal {
+                width: 95%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        /* Página de inicio estilizada */
+        .hero {
+            background: linear-gradient(135deg, #4361ee, #4cc9b0);
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-image {
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .features-section {
+            padding: 5rem 0;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            text-align: center;
+            height: 100%;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .feature-description {
+            color: #6c757d;
+        }
+
+        .testimonial-section {
+            background-color: #f1f5ff;
+            padding: 5rem 0;
+        }
+
+        .testimonial-card {
+            padding: 2rem;
+            text-align: center;
+            height: 100%;
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+        }
+
+        .testimonial-role {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .cta-section {
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .cta-description {
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #6c757d;
+        }
+
+        /* Estilos adicionales de dashboard */
+        .stats-container {
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .recent-activity {
+            margin-bottom: 2rem;
+        }
+
+        .activity-item {
+            padding: 1rem;
+            border-left: 3px solid var(--primary-color);
+            background-color: #f9fafb;
+            margin-bottom: 1rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .activity-time {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-message {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activity-icon {
+            color: var(--primary-color);
+        }
+
+        /* Dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            z-index: 100;
+            display: none;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f5ff;
+            color: var(--primary-color);
+        }
+
+        .dropdown-divider {
+            border-top: 1px solid #eee;
+            margin: 0.5rem 0;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-primary {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+
+        .badge-success {
+            background-color: rgba(76, 201, 176, 0.1);
+            color: var(--success-color);
+        }
+
+        .badge-warning {
+            background-color: rgba(249, 199, 79, 0.1);
+            color: var(--warning-color);
+        }
+
+        .badge-danger {
+            background-color: rgba(249, 65, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        /* Search bar */
+        .search-form {
+            position: relative;
+        }
+
+        .search-input {
+            padding-left: 2.5rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-item {
+            display: inline-block;
+        }
+
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .page-link:hover {
+            background-color: #f1f5ff;
+            color: var(--primary-color);
+        }
+
+        .page-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Avatares y listas de usuarios */
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .avatar-sm {
+            width: 30px;
+            height: 30px;
+            font-size: 0.9rem;
+        }
+
+        .avatar-lg {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+
+        .user-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            background-color: #f9fafb;
+            transition: var(--transition);
+        }
+
+        .user-item:hover {
+            background-color: #f1f5ff;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-role {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        /* Comentarios */
+        .comment {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-author {
+            font-weight: 500;
+        }
+
+        .comment-time {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .comment-text {
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .comment-action {
+            color: #6c757d;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .comment-action:hover {
+            color: var(--primary-color);
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            background-color: #f1f5ff;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            background-color: #e6edff;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: rgba(67, 97, 238, 0.1);
+            font-size: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .tag-remove:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Progress bar */
+        .progress {
+            height: 8px;
+            background-color: #eee;
+            border-radius: 50px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 50px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        /* Calendario */
+        .calendar {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .calendar th {
+            text-align: center;
+            padding: 0.75rem;
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        .calendar td {
+            text-align: center;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .calendar td:hover {
+            background-color: #f1f5ff;
+        }
+
+        .calendar td.today {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .calendar td.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .calendar td.has-event:after {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            margin: 3px auto 0;
+        }
+
+        .calendar td.other-month {
+            color: #ccc;
+        }
+
+        /* Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Estilos para el Editor WYSIWYG */
+        .wysiwyg-content {
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            margin-top: 0.5rem;
+        }
+
+        .wysiwyg-editor {
+            min-height: 300px;
+            padding: 1rem;
+            outline: none;
+        }
+
+        /* Estilos para la pantalla de error 404 */
+        .error-container {
+            text-align: center;
+            max-width: 500px;
+            margin: 5rem auto;
+            padding: 2rem;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+            margin-bottom: 2rem;
+            opacity: 0.5;
+        }
+
+        .error-message {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+        }
+
+        .error-description {
+            color: #6c757d;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">📚</span>
+                ApuntesHub
+            </a>
+            <div class="nav-links">
+                <a href="#" class="nav-link active">Inicio</a>
+                <a href="#" class="nav-link">Explorar</a>
+                <a href="#" class="nav-link">Características</a>
+                <a href="#" class="nav-link">Precios</a>
+                <a href="#" class="nav-link">Contacto</a>
+            </div>
+            <div class="nav-actions">
+                <a href="#" class="btn btn-outline btn-sm login-btn">Iniciar Sesión</a>
+                <a href="#" class="btn btn-primary btn-sm register-btn">Registrarse</a>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Menú">☰</button>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main id="app-container">
+        <!-- Página de inicio - Se mostrará cuando el usuario no está autenticado -->
+        <section id="landing-page">
+            <!-- Hero Section -->
+            <div class="hero">
+                <div class="container">
+                    <h1 class="hero-title">Organiza tus apuntes. Aprende mejor.</h1>
+                    <p class="hero-subtitle">ApuntesHub es la plataforma perfecta para estudiantes y profesionales que desean organizar, compartir y acceder a sus apuntes desde cualquier lugar.</p>
+                    <div class="hero-actions">
+                        <a href="#" class="btn btn-lg btn-primary register-btn">Comenzar Gratis</a>
+                        <a href="#" class="btn btn-lg btn-outline login-btn">Iniciar Sesión</a>
+                    </div>
+                    <img src="/api/placeholder/800/450" alt="ApuntesHub Dashboard" class="hero-image">
+                </div>
+            </div>
+
+            <!-- Características Section -->
+            <div class="features-section">
+                <div class="container">
+                    <h2 class="section-title text-center mb-4">Características Principales</h2>
+                    <div class="grid grid-3">
+                        <div class="card feature-card">
+                            <div class="feature-icon">📝</div>
+                            <h3 class="feature-title">Editor Rico</h3>
+                            <p class="feature-description">Crea apuntes con texto enriquecido, imágenes, listas, tablas y mucho más con nuestro editor intuitivo.</p>
+                        </div>
+                        <div class="card feature-card">
+                            <div class="feature-icon">🔄</div>
+                            <h3 class="feature-title">Sincronización</h3>
+                            <p class="feature-description">Accede a tus apuntes desde cualquier dispositivo con sincronización instantánea.</p>
+                        </div>
+                        <div class="card feature-card">
+                            <div class="feature-icon">👥</div>
+                            <h3 class="feature-title">Colaboración</h3>
+                            <p class="feature-description">Comparte tus apuntes con amigos o compañeros y trabajen juntos en tiempo real.</p>
+                        </div>
+                        <div class="card feature-card">
+                            <div class="feature-icon">🔍</div>
+                            <h3 class="feature-title">Búsqueda Avanzada</h3>
+                            <p class="feature-description">Encuentra rápidamente cualquier información con nuestra potente herramienta de búsqueda.</p>
+                        </div>
+                        <div class="card feature-card">
+                            <div class="feature-icon">🏷️</div>
+                            <h3 class="feature-title">Etiquetas y Categorías</h3>
+                            <p class="feature-description">Organiza tus apuntes con un sistema flexible de etiquetas y categorías.</p>
+                        </div>
+                        <div class="card feature-card">
+                            <div class="feature-icon">📱</div>
+                            <h3 class="feature-title">Aplicación Móvil</h3>
+                            <p class="feature-description">Lleva tus apuntes contigo con nuestra aplicación móvil para iOS y Android.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonios Section -->
+            <div class="testimonial-section">
+                <div class="container">
+                    <h2 class="section-title text-center mb-4">Lo que dicen nuestros usuarios</h2>
+                    <div class="grid grid-3">
+                        <div class="card testimonial-card">
+                            <img src="/api/placeholder/80/80" alt="Avatar" class="testimonial-avatar">
+                            <p class="testimonial-text">"ApuntesHub ha revolucionado mi forma de estudiar. Ahora tengo todos mis apuntes organizados y accesibles desde cualquier lugar."</p>
+                            <h4 class="testimonial-author">Ana García</h4>
+                            <p class="testimonial-role">Estudiante de Medicina</p>
+                        </div>
+                        <div class="card testimonial-card">
+                            <img src="/api/placeholder/80/80" alt="Avatar" class="testimonial-avatar">
+                            <p class="testimonial-text">"Como profesor, puedo compartir fácilmente mis materiales con los estudiantes y recibir sus comentarios de forma organizada."</p>
+                            <h4 class="testimonial-author">Carlos Rodríguez</h4>
+                            <p class="testimonial-role">Profesor de Matemáticas</p>
+                        </div>
+                        <div class="card testimonial-card">
+                            <img src="/api/placeholder/80/80" alt="Avatar" class="testimonial-avatar">
+                            <p class="testimonial-text">"La función de colaboración en tiempo real nos permite trabajar juntos en proyectos sin complicaciones. ¡Lo recomiendo totalmente!"</p>
+                            <h4 class="testimonial-author">Elena Torres</h4>
+                            <p class="testimonial-role">Estudiante de Ingeniería</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="cta-section">
+                <div class="container">
+                    <h2 class="cta-title">¿Listo para mejorar tu forma de tomar apuntes?</h2>
+                    <p class="cta-description">Únete a miles de estudiantes y profesionales que ya están aprovechando ApuntesHub para gestionar mejor su conocimiento.</p>
+                    <a href="#" class="btn btn-lg btn-primary register-btn">Comenzar Ahora - ¡Es Gratis!</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulario de Login -->
+        <section id="login-form" class="hidden">
+            <div class="auth-container card">
+                <h2 class="auth-title">Iniciar Sesión</h2>
+                <p class="auth-subtitle">Bienvenido de nuevo a ApuntesHub</p>
+                <form id="login-form-element">
+                    <div class="form-group">
+                        <label for="login-email" class="form-label">Correo Electrónico</label>
+                        <input type="email" id="login-email" class="form-control" placeholder="tu@correo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password" class="form-label">Contraseña</label>
+                        <input type="password" id="login-password" class="form-control" placeholder="Contraseña" required>
+                        <a href="#" class="form-text text-right forgot-password-link">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                    </div>
+                </form>
+                <div class="auth-footer">
+                    ¿No tienes una cuenta? <a href="#" class="auth-link register-link">Regístrate</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulario de Registro -->
+        <section id="register-form" class="hidden">
+            <div class="auth-container card">
+                <h2 class="auth-title">Crear Cuenta</h2>
+                <p class="auth-subtitle">Únete a ApuntesHub y comienza a organizar tus apuntes</p>
+                <form id="register-form-element">
+                    <div class="form-group">
+                        <label for="register-name" class="form-label">Nombre Completo</label>
+                        <input type="text" id="register-name" class="form-control" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email" class="form-label">Correo Electrónico</label>
+                        <input type="email" id="register-email" class="form-control" placeholder="tu@correo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password" class="form-label">Contraseña</label>
+                        <input type="password" id="register-password" class="form-control" placeholder="Contraseña (mínimo 8 caracteres)" required minlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password-confirm" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" id="register-password-confirm" class="form-control" placeholder="Confirma tu contraseña" required minlength="8">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary w-100">Crear Cuenta</button>
+                    </div>
+                </form>
+                <div class="auth-footer">
+                    ¿Ya tienes una cuenta? <a href="#" class="auth-link login-link">Inicia Sesión</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard - Se mostrará cuando el usuario está autenticado -->
+        <section id="dashboard" class="hidden">
+            <div class="container">
+                <div class="flex main-layout">
+                    <!-- Sidebar -->
+                    <aside class="sidebar">
+                        <h3 class="mb-3">Mi Cuenta</h3>
+                        <a href="#" class="sidebar-link active" data-page="dashboard-home">
+                            <i>📊</i> Dashboard
+                        </a>
+                        <a href="#" class="sidebar-link" data-page="my-notes">
+                            <i>📝</i> Mis Apuntes
+                        </a>
+                        <a href="#" class="sidebar-link" data-page="shared-notes">
+                            <i>👥</i> Compartidos
+                        </a>
+                        <a href="#" class="sidebar-link" data-page="favorites">
+                            <i>⭐</i> Favoritos
+                        </a>
+                        <a href="#" class="sidebar-link" data-page="trash">
+                            <i>🗑️</i> Papelera
+                        </a>
+                        <hr class="my-3">
+                        <h3 class="mb-3">Categorías</h3>
+                        <a href="#" class="sidebar-link" data-category="universidad">
+                            <i>🎓</i> Universidad
+                        </a>
+                        <a href="#" class="sidebar-link" data-category="trabajo">
+                            <i>💼</i> Trabajo
+                        </a>
+                        <a href="#" class="sidebar-link" data-category="personal">
+                            <i>📔</i> Personal
+                        </a>
+                        <a href="#" class="sidebar-link add-category-link">
+                            <i>➕</i> Añadir Categoría
+                        </a>
+                        <hr class="my-3">
+                        <a href="#" class="sidebar-link" data-page="settings">
+                            <i>⚙️</i> Configuración
+                        </a>
+                        <a href="#" class="sidebar-link logout-link">
+                            <i>🚪</i> Cerrar Sesión
+                        </a>
+                    </aside>
+
+                    <!-- Contenido del Dashboard -->
+                    <div class="content-area">
+                        <!-- Dashboard Home -->
+                        <div id="dashboard-home" class="dashboard-page">
+                            <div class="flex justify-between align-center mb-4">
+                                <h1 class="section-title">Dashboard</h1>
+                                <div class="flex gap-2">
+                                    <a href="#" class="btn btn-primary" id="create-note-btn">
+                                        <i>✏️</i> Nuevo Apunte
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Estadísticas -->
+                            <div class="stats-container grid grid-4 mb-4">
+                                <div class="card stat-card">
+                                    <div class="stat-value">24</div>
+                                    <div class="stat-label">Total de Apuntes</div>
+                                </div>
+                                <div class="card stat-card">
+                                    <div class="stat-value">12</div>
+                                    <div class="stat-label">Este Mes</div>
+                                </div>
+                                <div class="card stat-card">
+                                    <div class="stat-value">8</div>
+                                    <div class="stat-label">Compartidos</div>
+                                </div>
+                                <div class="card stat-card">
+                                    <div class="stat-value">5</div>
+                                    <div class="stat-label">Colaboradores</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Actividad Reciente y Apuntes -->
+                            <div class="grid grid-2">
+                                <!-- Actividad Reciente -->
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h3>Actividad Reciente</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="recent-activity">
+                                            <div class="activity-item">
+                                                <div class="activity-time">Hoy, 14:30</div>
+                                                <div class="activity-message">
+                                                    <i class="activity-icon">📝</i>
+                                                    Has creado un nuevo apunte <strong>"Introducción a la programación"</strong>
+                                                </div>
+                                            </div>
+                                            <div class="activity-item">
+                                                <div class="activity-time">Ayer, 10:15</div>
+                                                <div class="activity-message">
+                                                    <i class="activity-icon">👥</i>
+                                                    <strong>María González</strong> ha comentado en tu apunte <strong>"Física Cuántica"</strong>
+                                                </div>
+                                            </div>
+                                            <div class="activity-item">
+                                                <div class="activity-time">Ayer, 09:22</div>
+                                                <div class="activity-message">
+                                                    <i class="activity-icon">🔄</i>
+                                                    Has actualizado el apunte <strong>"Álgebra Lineal"</strong>
+                                                </div>
+                                            </div>
+                                            <div class="activity-item">
+                                                <div class="activity-time">12/04/2025, 16:45</div>
+                                                <div class="activity-message">
+                                                    <i class="activity-icon">⭐</i>
+                                                    Has marcado como favorito <strong>"Historia Contemporánea"</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="#" class="btn btn-outline btn-sm">Ver Toda la Actividad</a>
+                                    </div>
+                                </div>
+                                
+                                <!-- Apuntes Recientes -->
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h3>Apuntes Recientes</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="grid grid-1 gap-2">
+                                            <div class="card note-card">
+                                                <div class="card-body">
+                                                    <div class="note-header">
+                                                        <h4 class="note-title">Introducción a la programación</h4>
+                                                        <span class="badge badge-primary">Universidad</span>
+                                                    </div>
+                                                    <p class="note-subject">Informática</p>
+                                                    <p class="mb-2">Conceptos básicos de programación, algoritmos y estructuras de datos...</p>
+                                                    <div class="note-meta">
+                                                        <span>Hoy, 14:30</span>
+                                                        <div class="note-actions">
+                                                            <i class="note-action">⭐</i>
+                                                            <i class="note-action">📥</i>
+                                                            <i class="note-action">⋮</i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card note-card">
+                                                <div class="card-body">
+                                                    <div class="note-header">
+                                                        <h4 class="note-title">Física Cuántica</h4>
+                                                        <span class="badge badge-primary">Universidad</span>
+                                                    </div>
+                                                    <p class="note-subject">Física</p>
+                                                    <p class="mb-2">Principios fundamentales de la mecánica cuántica y sus aplicaciones...</p>
+                                                    <div class="note-meta">
+                                                        <span>Ayer, 09:45</span>
+                                                        <div class="note-actions">
+                                                            <i class="note-action">⭐</i>
+                                                            <i class="note-action">📥</i>
+                                                            <i class="note-action">⋮</i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="#" class="btn btn-outline btn-sm" data-page="my-notes">Ver Todos los Apuntes</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Calendario y Tareas -->
+                            <div class="grid grid-2">
+                                <!-- Calendario -->
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h3>Calendario</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="calendar">
+                                            <thead>
+                                                <tr>
+                                                    <th>Lun</th>
+                                                    <th>Mar</th>
+                                                    <th>Mié</th>
+                                                    <th>Jue</th>
+                                                    <th>Vie</th>
+                                                    <th>Sáb</th>
+                                                    <th>Dom</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="other-month">29</td>
+                                                    <td class="other-month">30</td>
+                                                    <td>1</td>
+                                                    <td>2</td>
+                                                    <td>3</td>
+                                                    <td>4</td>
+                                                    <td>5</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>6</td>
+                                                    <td>7</td>
+                                                    <td>8</td>
+                                                    <td>9</td>
+                                                    <td>10</td>
+                                                    <td>11</td>
+                                                    <td>12</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>13</td>
+                                                    <td>14</td>
+                                                    <td>15</td>
+                                                    <td>16</td>
+                                                    <td>17</td>
+                                                    <td>18</td>
+                                                    <td>19</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>20</td>
+                                                    <td>21</td>
+                                                    <td>22</td>
+                                                    <td>23</td>
+                                                    <td>24</td>
+                                                    <td>25</td>
+                                                    <td>26</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>27</td>
+                                                    <td>28</td>
+                                                    <td>29</td>
+                                                    <td class="today has-event">30</td>
+                                                    <td class="other-month">1</td>
+                                                    <td class="other-month">2</td>
+                                                    <td class="other-month">3</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Tareas Pendientes -->
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h3>Tareas Pendientes</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <div class="flex gap-2">
+                                                <input type="text" class="form-control" placeholder="Añadir nueva tarea">
+                                                <button class="btn btn-primary">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="flex align-center gap-2">
+                                                <input type="checkbox"
